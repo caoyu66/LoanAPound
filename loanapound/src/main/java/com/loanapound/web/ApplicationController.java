@@ -5,10 +5,10 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.loanapound.db.LoanApplication;
@@ -26,18 +26,18 @@ public class ApplicationController {
 	private LoanApplicationDao loanApplicationDao;
 	
 	@RequestMapping(value = "/application", method = RequestMethod.GET)
-	public ModelAndView showApplicationForm(Model model) {
-		ModelAndView modelAndView = new ModelAndView("application");
-        modelAndView.addObject("application", new LoanApplication());
-        return modelAndView;
+	public String showApplicationForm(Model model) {
+		model.addAttribute("application", new LoanApplication());
+		return "application";
     }
+
 	
 	@RequestMapping(value = { "/application"}, method = RequestMethod.POST)
-	public String processApplication(@Valid LoanApplication loanApplication
+	public String processApplication(@Valid @ModelAttribute("application") LoanApplication loanApplication
 			, RedirectAttributes redirectAttributes
-			, BindingResult bindingResult) 
+			, Errors errors) 
 	{
-		if(bindingResult.hasErrors()) {
+		if(errors.hasErrors()) {
 			return "application";
 		}
 		
