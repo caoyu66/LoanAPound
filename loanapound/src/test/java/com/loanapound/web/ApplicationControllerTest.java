@@ -1,15 +1,21 @@
 package com.loanapound.web;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.loanapound.db.LoanApplication;
 import com.loanapound.db.Applicant;
+import com.loanapound.db.DefaultLoanApplicationDao;
+import com.loanapound.db.LoanApplication;
 import com.loanapound.engine.ApplicationDecision;
 import com.loanapound.engine.LoanDecisionEngine;
 
@@ -24,6 +30,7 @@ public class ApplicationControllerTest {
 	@Test
 	public void shouldShowApplication() throws Exception {
 		ApplicationController controller = new ApplicationController();
+		controller.setLoanApplicationDao(new DefaultLoanApplicationDao());
 		MockMvc mockMvc = standaloneSetup(controller).build();
 		mockMvc.perform(get("/application.htm")).andExpect(view().name("application"));
 	}
@@ -48,6 +55,7 @@ public class ApplicationControllerTest {
 		
 		ApplicationController controller = new ApplicationController();
 		controller.setLoanDecisionEngine(mockDecisionEngine);
+		controller.setLoanApplicationDao(new DefaultLoanApplicationDao());
 		MockMvc mockMvc = standaloneSetup(controller).build();
 		mockMvc.perform(post("/application.htm")).andExpect(redirectedUrl("applicationstatus.htm?id=1"));
 		

@@ -9,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.loanapound.db.LoanApplication;
@@ -23,11 +24,16 @@ public class ApplicationController {
 	@Autowired
 	private LoanDecisionEngine loanDecisionEngine;
 	
+	@Autowired
 	private LoanApplicationDao loanApplicationDao;
 	
 	@RequestMapping(value = "/application", method = RequestMethod.GET)
-	public String showApplicationForm(Model model) {
-		model.addAttribute("application", new LoanApplication());
+	public String showApplicationForm(@RequestParam(value = "id", defaultValue = "0") long id, Model model) {
+		LoanApplication loanApplication = loanApplicationDao.getLoanApplication(id);
+		if(loanApplication == null){
+			loanApplication = new LoanApplication();
+		}
+		model.addAttribute("application", loanApplication);
 		return "application";
     }
 
@@ -41,9 +47,12 @@ public class ApplicationController {
 			return "application";
 		}
 		
+		loanApplicationDao.persistLoanApplication(loanApplication);
 		ApplicationDecision appDecision = loanDecisionEngine.processLoanApplication(loanApplication);
+		
 		//XXX: test code
 		loanApplication.setId(++applicationId);
+		
 		redirectAttributes.addFlashAttribute("ApplicationDecision", appDecision);
         return "redirect:applicationstatus.htm?id=" + loanApplication.getId();
     }
