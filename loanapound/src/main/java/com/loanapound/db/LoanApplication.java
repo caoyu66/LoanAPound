@@ -3,7 +3,6 @@ package com.loanapound.db;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.validation.constraints.Min;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -29,7 +28,6 @@ public class LoanApplication implements Serializable {
 		this.id = id;
 	}
 	
-	@Min(100)
 	@XmlElement (name="AppliedAmount")
 	public int getAppliedAmount() {
 		return appliedAmount;

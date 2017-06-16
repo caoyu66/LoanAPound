@@ -2,6 +2,9 @@ package com.loanapound.db;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class UserAccount  implements Serializable {
 	private long id;
 	private String email;
@@ -25,6 +28,8 @@ public class UserAccount  implements Serializable {
 		this.id = id;
 	}
 
+	@NotEmpty
+	@Email
 	public String getEmail() {
 		return email;
 	}

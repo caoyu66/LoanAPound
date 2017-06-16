@@ -11,27 +11,23 @@
 
 <body>
 <h1> Application Form</h1><p/>
-<form:form method="POST" commandName="application">
+<form:form method="POST" commandName="applicant">
 	<form:errors />
 	<table class="display">
 		<tr>
 			<td>Email: </td>
-			<td><form:input path="applicant.email" /></td>
-			<td><form:errors path="applicant.email"  /></td>
-		</tr>
-		<tr>
+			<td><form:input path="email" /></td>
+			<td><form:errors path="email"  /></td>
+		</tr><tr>
 			<td>First Name: </td>
-			<td><form:input path="applicant.name" /></td>
+			<td><form:input path="name" /></td>
 		</tr><tr>
 			<td>Middle Name: </td>
-			<td><form:input path="applicant.middleName" /></td>
+			<td><form:input path="middleName" /></td>
 		</tr><tr>
 			<td>Surname:</td>
-			<td><form:input path="applicant.surname" /></td>
-			<td><form:errors path="applicant.surname"  /></td>
-		</tr><tr>
-			<td>Loan Amount:</td>
-			<td><form:input path="appliedAmount" /></td>
+			<td><form:input path="surname" /></td>
+			<td><form:errors path="surname"  /></td>
 		</tr><tr>
 			<td colspan="2" align="center"><input type="submit" value="Register" /></td>
 		</tr>
